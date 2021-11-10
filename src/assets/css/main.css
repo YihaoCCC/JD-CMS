@@ -95,11 +95,14 @@ a {
 /*BaseForm*/
 
 .form-box {
-    width: 600px;
+    width: 100%;
 }
 
 .form-box .line {
     text-align: center;
+}
+.el-form-item__content {
+    width: 300px;
 }
 
 .el-time-panel__content::after,

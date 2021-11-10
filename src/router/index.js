@@ -32,7 +32,7 @@ const routes = [
                 path: "/charts",
                 name: "basecharts",
                 meta: {
-                    title: '图表'
+                    title: '销售统计'
                 },
                 component: () => import (
                 /* webpackChunkName: "charts" */
@@ -41,7 +41,7 @@ const routes = [
                 path: "/form",
                 name: "baseform",
                 meta: {
-                    title: '表单'
+                    title: '新增商品'
                 },
                 component: () => import (
                 /* webpackChunkName: "form" */

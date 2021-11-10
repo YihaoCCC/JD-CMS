@@ -5,6 +5,9 @@
     background: #324157;
 }
 .plugins-tips{
+    text-align: center;
+    font-size: 20px;
+    color: #666;
     background: #eef1f6;
 }
 .plugins-tips a{

@@ -9,12 +9,8 @@
         </div>
         <div class="container">
             <div class="plugins-tips">
-                vue-schart：vue.js封装sChart.js的图表组件。
-                访问地址：
-                <a
-                    href="https://github.com/lin-xin/vue-schart"
-                    target="_blank"
-                >vue-schart</a>
+                达达利亚web商城平台销售数据统计
+               
             </div>
             <div class="schart-box">
                 <div class="content-title">柱状图</div>

@@ -10,17 +10,31 @@
         </div>
         <div class="container">
             <div class="form-box">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="表单名称">
-                        <el-input v-model="form.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选择器">
-                        <el-select v-model="form.region" placeholder="请选择">
-                            <el-option key="bbk" label="步步高" value="bbk"></el-option>
-                            <el-option key="xtc" label="小天才" value="xtc"></el-option>
-                            <el-option key="imoo" label="imoo" value="imoo"></el-option>
-                        </el-select>
-                    </el-form-item>
+                <el-form ref="form" :model="form" label-width="120px" :inline='true'>
+                    <el-row>
+                        <el-col :span='8'>
+                            <el-form-item label="商品名称：">
+                                <el-input v-model="form.name"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span='8'>
+                            <el-form-item label="商品图片链接：">
+                                <el-input v-model="form.name"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span='8'>
+                            <el-form-item label="商品类型：">
+                                <el-select v-model="form.region" placeholder="请选择">
+                                    <el-option key="bbk" label="步步高" value="bbk"></el-option>
+                                    <el-option key="xtc" label="小天才" value="xtc"></el-option>
+                                    <el-option key="imoo" label="imoo" value="imoo"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    
+                    
+                    
                     <el-form-item label="日期时间">
                         <el-col :span="11">
                             <el-date-picker
@@ -59,13 +73,20 @@
                             <el-radio label="imoo"></el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="文本框">
+                    <el-form-item label="商品描述">
                         <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit">表单提交</el-button>
-                        <el-button>取消</el-button>
-                    </el-form-item>
+                    <el-row>
+                        <el-col :span='10'></el-col>
+                        <el-col :span='8'>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit">增加该商品</el-button>
+                                <el-button>取消</el-button>
+                            </el-form-item>
+                        </el-col>
+                       
+                    </el-row>
+                    
                 </el-form>
             </div>
         </div>

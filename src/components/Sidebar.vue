@@ -68,16 +68,16 @@ export default {
                 {
                     icon: "el-icon-lx-copy",
                     index: "tabs",
-                    title: "tab选项卡"
+                    title: "消息中心"
                 },
                 {
                     icon: "el-icon-lx-calendar",
                     index: "3",
-                    title: "表单相关",
+                    title: "商品管理",
                     subs: [
                         {
                             index: "form",
-                            title: "基本表单"
+                            title: "新增商品"
                         },
                         //         {
                         //             index: "3-2",
@@ -107,7 +107,7 @@ export default {
                 {
                     icon: "el-icon-pie-chart",
                     index: "charts",
-                    title: "schart图表"
+                    title: "销售统计"
                 },
                 // {
                 //     icon: "el-icon-rank",

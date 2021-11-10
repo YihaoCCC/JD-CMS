@@ -56,15 +56,6 @@ const routes = [
                 /* webpackChunkName: "tabs" */
                 "../views/Tabs.vue")
             }, {
-                path: "/donate",
-                name: "donate",
-                meta: {
-                    title: '鼓励作者'
-                },
-                component: () => import (
-                /* webpackChunkName: "donate" */
-                "../views/Donate.vue")
-            }, {
                 path: "/permission",
                 name: "permission",
                 meta: {

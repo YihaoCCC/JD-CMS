@@ -10,7 +10,7 @@
             unique-opened
             router
         >
-            <template v-for="item in items">
+            <template v-for="item in sliderItems">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template #title>
@@ -54,7 +54,7 @@
 export default {
     data() {
         return {
-            items: [
+            sliderItems: [
                 {
                     icon: "el-icon-lx-home",
                     index: "dashboard",

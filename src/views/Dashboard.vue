@@ -16,7 +16,7 @@
                     </div>
                     <div class="user-info-list">
                         上次登录地点：
-                        <span>东莞</span>
+                        <span>天津·西青</span>
                     </div>
                 </el-card>
                 <el-card shadow="hover" style="height:252px;">
@@ -130,7 +130,7 @@ export default {
                     status: false
                 },
                 {
-                    title: "今天要修复100个bug",
+                    title: "达达利亚小组后端管理系统",
                     status: false
                 },
                 {
@@ -138,7 +138,7 @@ export default {
                     status: false
                 },
                 {
-                    title: "今天要修复100个bug",
+                    title: "达达利亚小组后端管理系统",
                     status: false
                 },
                 {

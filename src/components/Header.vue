@@ -5,7 +5,7 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">后台管理系统</div>
+        <div class="logo">达达利亚京东商城CMS</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 消息中心 -->
@@ -33,7 +33,7 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
+                            <a href="https://github.com/YihaoCCC/jd-shop.git" target="_blank">
                                 <el-dropdown-item>项目仓库</el-dropdown-item>
                             </a>
                             <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>

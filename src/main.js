@@ -9,4 +9,4 @@ installElementPlus(app)
 app
     .use(store)
     .use(router)
-    .mount('#app')
+    .mount('#app') 

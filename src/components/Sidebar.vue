@@ -76,6 +76,11 @@ export default {
                     title: "新增商品",
                 },
                 {
+                    icon: "el-icon-lx-add",
+                    index: "addGoodsPromotion",
+                    title: "新增促销",
+                },
+                {
                     icon: "el-icon-pie-chart",
                     index: "charts",
                     title: "销售统计"

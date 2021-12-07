@@ -54,6 +54,15 @@ const routes = [
                 /* webpackChunkName: "form" */
                 "../views/AddGoodsForm.vue")
             }, {
+                path: "/addGoodsPromotion",
+                name: "addGoodsPromotion",
+                meta: {
+                    title: '新增促销'
+                },
+                component: () => import (
+                /* webpackChunkName: "form" */
+                "../views/AddGoodsPromotion.vue")
+            },{
                 path: "/tabs",
                 name: "tabs",
                 meta: {

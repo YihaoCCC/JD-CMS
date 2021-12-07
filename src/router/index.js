@@ -20,14 +20,21 @@ const routes = [
                 /* webpackChunkName: "dashboard" */
                 "../views/Dashboard.vue")
             }, {
-                path: "/table",
+                path: "/tableOfGoods",
                 name: "basetable",
                 meta: {
-                    title: '表格'
+                    title: '商品管理'
                 },
                 component: () => import (
                 /* webpackChunkName: "table" */
-                "../views/BaseTable.vue")
+                "../views/TableGoods.vue")
+            }, {
+                path: '/tableOfOrder',
+                name: 'tableOfOrder',
+                meta: {
+                    title: '订单管理'
+                },
+                component: ()=> import ('../views/TableOrder.vue')
             }, {
                 path: "/charts",
                 name: "basecharts",
@@ -38,76 +45,23 @@ const routes = [
                 /* webpackChunkName: "charts" */
                 "../views/BaseCharts.vue")
             }, {
-                path: "/form",
-                name: "baseform",
+                path: "/addGoodsForm",
+                name: "addGoodsForm",
                 meta: {
                     title: '新增商品'
                 },
                 component: () => import (
                 /* webpackChunkName: "form" */
-                "../views/BaseForm.vue")
+                "../views/AddGoodsForm.vue")
             }, {
                 path: "/tabs",
                 name: "tabs",
                 meta: {
-                    title: 'tab标签'
+                    title: '消息中心'
                 },
                 component: () => import (
                 /* webpackChunkName: "tabs" */
                 "../views/Tabs.vue")
-            }, {
-                path: "/permission",
-                name: "permission",
-                meta: {
-                    title: '权限管理',
-                    permission: true
-                },
-                component: () => import (
-                /* webpackChunkName: "permission" */
-                "../views/Permission.vue")
-            }, {
-                path: "/i18n",
-                name: "i18n",
-                meta: {
-                    title: '国际化语言'
-                },
-                component: () => import (
-                /* webpackChunkName: "i18n" */
-                "../views/I18n.vue")
-            }, {
-                path: "/upload",
-                name: "upload",
-                meta: {
-                    title: '上传插件'
-                },
-                component: () => import (
-                /* webpackChunkName: "upload" */
-                "../views/Upload.vue")
-            }, {
-                path: "/icon",
-                name: "icon",
-                meta: {
-                    title: '自定义图标'
-                },
-                component: () => import (
-                /* webpackChunkName: "icon" */
-                "../views/Icon.vue")
-            }, {
-                path: '/404',
-                name: '404',
-                meta: {
-                    title: '找不到页面'
-                },
-                component: () => import (/* webpackChunkName: "404" */
-                '../views/404.vue')
-            }, {
-                path: '/403',
-                name: '403',
-                meta: {
-                    title: '没有权限'
-                },
-                component: () => import (/* webpackChunkName: "403" */
-                '../views/403.vue')
             }
         ]
     }, {

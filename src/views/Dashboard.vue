@@ -16,7 +16,7 @@
                     </div>
                     <div class="user-info-list">
                         上次登录地点：
-                        <span>东莞</span>
+                        <span>天津·西青</span>
                     </div>
                 </el-card>
                 <el-card shadow="hover" style="height:252px;">
@@ -39,8 +39,8 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-user-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
+                                    <div class="grid-num">{{totalSale}}</div>
+                                    <div>销售总额</div>
                                 </div>
                             </div>
                         </el-card>
@@ -222,7 +222,8 @@ export default {
                         data: [74, 118, 200, 235, 90]
                     }
                 ]
-            }
+            },
+            totalSale: 0
         };
     },
     components: {
@@ -233,7 +234,9 @@ export default {
             return this.name === "admin" ? "超级管理员" : "普通用户";
         }
     },
-
+    mounted() {
+        this.getTotalSale()
+    },
     methods: {
         changeDate() {
             const now = new Date().getTime();
@@ -242,8 +245,14 @@ export default {
                 item.name = `${date.getFullYear()}/${date.getMonth() +
                     1}/${date.getDate()}`;
             });
+        },
+        getTotalSale() {
+            this.yhService.post('/api/shop_war/TotalIncome').then(res => {
+                this.totalSale = res
+            })
         }
-    }
+    },
+    
 };
 </script>
 

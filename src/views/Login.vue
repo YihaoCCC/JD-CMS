@@ -25,7 +25,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips">Tips : 请输入您的用户名和密码</p>
             </el-form>
         </div>
     </div>

@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 这里是所有的订单
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -33,12 +33,20 @@
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column prop="money" label="帐户余额" ></el-table-column>
+                 <el-table-column align="center" label="详情" type="expand" width="50px" >
+                    <template #default="scope">
+                        <p>商品名称：{{ scope.row.name }}</p>
+                        <p>商品详情：{{scope.row.name}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column  label="商品名称" align="center" width="240px" >
+                    <template #default="scope">{{ scope.row.name }}</template>
+                </el-table-column>
+                <el-table-column prop="money" label="商品价格"  align="center" width="100" ></el-table-column>
 <!--                <el-table-column label="账户余额">-->
 <!--                    <template #default="scope">￥{{ scope.row.money }}</template>-->
 <!--                </el-table-column>-->
-                <el-table-column label="头像(查看大图)" align="center">
+                <el-table-column label="图片(点击查看大图)" align="center" width="160">
                     <template #default="scope">
                         <el-image
                             class="table-td-thumb"
@@ -47,8 +55,8 @@
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column prop="address" label="商品是否自营"  align="center" width="140px"></el-table-column>
+                <el-table-column label="促销状态" align="center" width="140">
                     <template #default="scope">
                         <el-tag
                             :type="
@@ -62,7 +70,8 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="date" label="注册时间"></el-table-column>
+                <el-table-column prop="date" label="库存" align="center" width="80px"></el-table-column>
+                <el-table-column prop="date" label="版本信息" align="center"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button
@@ -114,7 +123,7 @@
 <script>
 import { fetchData } from "../api/index";
 export default {
-    name: "basetable",
+    name: "BaseTableOrder",
     data() {
         return {
             query: {
@@ -198,7 +207,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .handle-box {
     margin-bottom: 20px;
 }
@@ -226,5 +235,10 @@ export default {
     margin: auto;
     width: 40px;
     height: 40px;
+}
+.el-table .cell {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;    
 }
 </style>

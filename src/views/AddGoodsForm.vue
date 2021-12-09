@@ -52,9 +52,9 @@
                    <el-divider></el-divider>
                    <p class="versionTitle">商品版本详情：</p>   
                     <el-row  v-for="(item, index) in form.goodsVersionList" :key="item.goodsVersionDetail">
-                        <el-col :span="5">
+                         <el-col :span="5">
                             <el-form-item label="商品版本名称:">
-                                <el-input v-model="item.goodsVersionDetail" placeholder="请输入版本名称"></el-input>
+                                 <el-input v-model="item.goodsVersionDetail" placeholder="请输入版本名称" ></el-input>
                             </el-form-item>
                         </el-col>
                          <el-col :span="5">
@@ -156,14 +156,11 @@ export default {
                 }
             ],
             form: {
-                name: '',
+                goodsName: '',
                 region: '',
-                date1: '',
-                date2: '',
                 delivery: true,
                 type: ['步步高'],
                 resource: '小天才',
-                desc: '',
                 options: [],
                 goodsVersionList: [
                     {
@@ -193,16 +190,18 @@ export default {
             if(canSubmit === goodsVersionList.length) {
                 if(!isAnyVersionPriceIsZero) {
                     this.$message.success('新增商品成功！')
+                    console.log(this.form)
                 } else {
                     this.$confirm('检测到您有版本价格为零, 是否继续新增该商品?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '新增商品成功!'
-                    });
+                        console.log(this.form)
+                        this.$message({
+                            type: 'success',
+                            message: '新增商品成功!'
+                        });
                     }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -225,7 +224,7 @@ export default {
             )
         },
         deleteItem(index) {
-            if ( !this.form.goodsVersionList.length === 1) {
+            if ( this.form.goodsVersionList.length !== 1) {
                 this.form.goodsVersionList.splice(index, 1 )
             } else {
                 this.$message.error('至少有一个版本数')

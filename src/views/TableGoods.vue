@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 商品管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -15,11 +15,11 @@
                     class="handle-del mr10"
                     @click="delAllSelection"
                 >批量删除</el-button>
-                <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
+                <el-select v-model="query.address" placeholder="是否自营" class="handle-select mr10">
+                    <el-option key="1" label="自营" value="自营"></el-option>
+                    <el-option key="2" label="非自营" value="非自营"></el-option>
                 </el-select>
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="商品名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
@@ -29,33 +29,40 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
+                max-height="630"
 
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                 <el-table-column align="center" label="详情" type="expand" width="50px" >
+                <el-table-column type="index" label="ID" width="55" align="center"></el-table-column>
+                <el-table-column align="center" label="详情" type="expand" width="50px" >
                     <template #default="scope">
-                        <p>商品名称：{{ scope.row.name }}</p>
-                        <p>商品详情：{{scope.row.name}}</p>
+                        <p>商品名称：{{ scope.row.goodsName }}</p>
+                        <p>商品详情：{{scope.row.goodsDetail}}</p>
                     </template>
                 </el-table-column>
                 <el-table-column  label="商品名称" align="center" width="240px" >
-                    <template #default="scope">{{ scope.row.name }}</template>
+                    <template #default="scope">{{ scope.row.goodsName }}</template>
                 </el-table-column>
-                <el-table-column prop="money" label="商品价格"  align="center" width="100" ></el-table-column>
-<!--                <el-table-column label="账户余额">-->
-<!--                    <template #default="scope">￥{{ scope.row.money }}</template>-->
-<!--                </el-table-column>-->
+                <!-- <el-table-column prop="goodsPrice" label="商品价格"  align="center" width="100" ></el-table-column> -->
+               <el-table-column label="商品价格" align="center">
+                   <template #default="scope">￥{{ scope.row.goodsPrice }}</template>
+                </el-table-column>
                 <el-table-column label="图片(点击查看大图)" align="center" width="160">
                     <template #default="scope">
                         <el-image
                             class="table-td-thumb"
-                            :src="scope.row.thumb"
-                            :preview-src-list="[scope.row.thumb]"
+                            :src="scope.row.photoUrl"
+                            :preview-src-list="[scope.row.photoUrl]"
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="商品是否自营"  align="center" width="140px"></el-table-column>
+                <el-table-column prop="goodsIsSelf" label="商品是否自营"  align="center" width="140px">
+                    <template #default='scoped'>
+                        <el-tag :type=" scoped.row.goodsIsSelf? 'success':'danger'">
+                            {{ scoped.row.goodsIsSelf ? '自营' : '非自营'}}
+                        </el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="促销状态" align="center" width="140">
                     <template #default="scope">
                         <el-tag
@@ -70,7 +77,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="date" label="库存" align="center" width="80px"></el-table-column>
+                <el-table-column prop="goodsInvn" label="库存" align="center" width="80px"></el-table-column>
                 <el-table-column prop="date" label="版本信息" align="center"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
@@ -121,7 +128,7 @@
 </template>
 
 <script>
-import { fetchData } from "../api/index";
+// import { fetchData } from "../api/index";
 export default {
     name: "basetable",
     data() {
@@ -139,7 +146,8 @@ export default {
             pageTotal: 0,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            pageNum: 1
         };
     },
     created() {
@@ -148,11 +156,14 @@ export default {
     methods: {
         // 获取 easy-mock 的模拟数据
         getData() {
-            fetchData(this.query).then(res => {
-                console.log(res);
-                this.tableData = res.list;
-                this.pageTotal = res.pageTotal || 50;
-            });
+            // fetchData(this.query).then(res => {
+            //     console.log(res);
+            //     this.tableData = res.list;
+            //     this.pageTotal = res.pageTotal || 50;
+            // });
+            this.yhService.get(`/backSuApi/admin/queryAll/${this.pageNum}`).then(res => {
+                this.tableData = res
+            })
         },
         // 触发搜索按钮
         handleSearch() {

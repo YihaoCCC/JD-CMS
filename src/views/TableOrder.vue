@@ -9,17 +9,7 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除</el-button>
-                <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-input v-model="query.name" placeholder="请输入收货人姓名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
@@ -28,63 +18,63 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change="handleSelectionChange"
-
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                 <el-table-column align="center" label="详情" type="expand" width="50px" >
+               
+                <el-table-column type="index" label="ID" width="55" align="center"></el-table-column>
+                 <el-table-column  label="订单号" align="center" width="280px" >
+                    <template #default="scope">{{ scope.row.orderId }}</template>
+                </el-table-column>
+                 <el-table-column align="center" label="订单详情" type="expand" width="80px" >
                     <template #default="scope">
-                        <p>商品名称：{{ scope.row.name }}</p>
-                        <p>商品详情：{{scope.row.name}}</p>
+                        <div >订单详情：（点击图片查看大图）
+                            <div class="orderDetail" v-for="item in scope.row.orderDetails" :key="item.goodsId">
+                                <p>{{item.goodsName}} x {{item.number}} {{item.goodsVersionDetail}}</p> 
+                                 <el-image
+                                    class="table-td-thumb"
+                                    :src="item.versionPhotoUrl"
+                                    :preview-src-list="[item.versionPhotoUrl]"
+                                ></el-image>
+                            </div>
+                           
+                        </div>
+                        
                     </template>
                 </el-table-column>
-                <el-table-column  label="商品名称" align="center" width="240px" >
-                    <template #default="scope">{{ scope.row.name }}</template>
+                
+                <el-table-column  label="收获人信息" align="center" width="200px" >
+                    <template #default="scope">{{ scope.row.address.name }} --- {{scope.row.address.phone}}</template>
                 </el-table-column>
-                <el-table-column prop="money" label="商品价格"  align="center" width="100" ></el-table-column>
-<!--                <el-table-column label="账户余额">-->
-<!--                    <template #default="scope">￥{{ scope.row.money }}</template>-->
-<!--                </el-table-column>-->
-                <el-table-column label="图片(点击查看大图)" align="center" width="160">
-                    <template #default="scope">
-                        <el-image
-                            class="table-td-thumb"
-                            :src="scope.row.thumb"
-                            :preview-src-list="[scope.row.thumb]"
-                        ></el-image>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="address" label="商品是否自营"  align="center" width="140px"></el-table-column>
-                <el-table-column label="促销状态" align="center" width="140">
+                <el-table-column prop="oriAmount" label="订单原价（￥）"  align="center" width="100" ></el-table-column>
+                <el-table-column prop="realAmount" label="订单总价（￥）"  align="center" width="100" ></el-table-column>
+                <el-table-column label="订单状态" align="center" width="120" >
                     <template #default="scope">
                         <el-tag
                             :type="
-                                scope.row.state === '成功'
+                                scope.row.orderStatus === '待评价'
                                     ? 'success'
-                                    : scope.row.state === '失败'
+                                    : scope.row.orderStatus === '待付款'
+                                    ? 'warning'
+                                    : scope.row.orderStatus === '待发货'
                                     ? 'danger'
                                     : ''
                             "
-                        >{{ scope.row.state }}</el-tag>
+                        >{{ scope.row.orderStatus }}</el-tag>
                     </template>
                 </el-table-column>
-
-                <el-table-column prop="date" label="库存" align="center" width="80px"></el-table-column>
-                <el-table-column prop="date" label="版本信息" align="center"></el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="下单时间" prop="orderTime" align="center" width="100px"></el-table-column>
+                <el-table-column  label="收获地址信息" align="center">
+                    <template #default='scoped'>
+                        {{scoped.row.address.city}}{{scoped.row.address.area}}{{scoped.row.address.addressDetail}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="100" align="center">
                     <template #default="scope">
                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(scope.$index, scope.row)"
+                            :disabled='scope.row.orderStatus === "待评价" '
                         >编辑</el-button>
-                        <el-button
-                            type="text"
-                            icon="el-icon-delete"
-                            class="red"
-                            @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -92,8 +82,8 @@
                 <el-pagination
                     background
                     layout="total, prev, pager, next"
-                    :current-page="query.pageIndex"
-                    :page-size="query.pageSize"
+                    :current-page="pageNum"
+                    :page-size="10"
                     :total="pageTotal"
                     @current-change="handlePageChange"
                 ></el-pagination>
@@ -101,13 +91,32 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" v-model="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+        <el-dialog title="修改订单状态" v-model="editVisible" width="30%">
+            <el-form ref="form" :model="formItem" label-width="100px">
+                <el-form-item label="原状态：">
+                    <el-input v-model="formItem.orderStatus" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="选择新状态："  >
+                    <el-select v-model="status" placeholder="">
+                        <el-option
+                            label="待发货"
+                            value="待发货"
+                            :disabled='true'
+                            >
+                        </el-option>
+                        <el-option
+                            label="待收货"
+                            value="待收货"
+                            :disabled='formItem.orderStatus === "待收货" '
+                            >
+                        </el-option>
+                        <el-option
+                            label="待评价"
+                            value="待评价"
+                            :disabled='(formItem.orderStatus === "待评价" || formItem.orderStatus === "待发货") '
+                            >
+                        </el-option>
+                    </el-select> 
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -121,7 +130,7 @@
 </template>
 
 <script>
-import { fetchData } from "../api/index";
+// import { fetchData } from "../api/index";
 export default {
     name: "BaseTableOrder",
     data() {
@@ -133,13 +142,13 @@ export default {
                 pageSize: 10
             },
             tableData: [],
-            multipleSelection: [],
-            delList: [],
             editVisible: false,
             pageTotal: 0,
-            form: {},
+            formItem: {},
             idx: -1,
-            id: -1
+            id: -1,
+            pageNum: 1,
+            status: ''
         };
     },
     created() {
@@ -148,66 +157,50 @@ export default {
     methods: {
         // 获取 easy-mock 的模拟数据
         getData() {
-            fetchData(this.query).then(res => {
-                console.log(res);
-                this.tableData = res.list;
-                this.pageTotal = res.pageTotal || 50;
-            });
+            // fetchData(this.query).then(res => {
+            //     console.log(res);
+            //     this.tableData = res.list;
+            //     this.pageTotal = res.pageTotal || 50;
+            // });
+             this.yhService.get(`/backSuApi/admin/order/queryAll/${this.pageNum}`).then(res => {
+                this.tableData = res.complexOrders
+                this.pageTotal = res.total
+            })
         },
         // 触发搜索按钮
         handleSearch() {
-            this.$set(this.query, "pageIndex", 1);
-            this.getData();
-        },
-        // 删除操作
-        handleDelete(index) {
-            // 二次确认删除
-            this.$confirm("确定要删除吗？", "提示", {
-                type: "warning"
-            })
-                .then(() => {
-                    this.$message.success("删除成功");
-                    this.tableData.splice(index, 1);
-                })
-                .catch(() => {});
-        },
-        // 多选操作
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        delAllSelection() {
-            const length = this.multipleSelection.length;
-            let str = "";
-            this.delList = this.delList.concat(this.multipleSelection);
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + " ";
-            }
-            this.$message.error(`删除了${str}`);
-            this.multipleSelection = [];
+            // this.$set(this.query, "pageIndex", 1);
+            // this.getData();
+            this.$message.info('coder正在奋笔疾书中......')
         },
         // 编辑操作
         handleEdit(index, row) {
             this.idx = index;
-            this.form = row;
+            this.formItem = row;
             this.editVisible = true;
-            console.log(row.name+"````````"+index);
+            console.log(this.formItem);
         },
         // 保存编辑
         saveEdit() {
             this.editVisible = false;
-            this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-            this.$set(this.tableData, this.idx, this.form);
+            console.log(this.status)
+            this.yhService.get(`/backSuApi/admin/order/modify/${this.formItem.orderId}/${this.status}`).then(res => {
+                if(res) {
+                    this.$message.success('修改成功！')
+                    history.go(0)
+                }
+            })
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+            this.pageNum = val
             this.getData();
         }
     }
 };
 </script>
 
-<style >
+<style scoped >
 .handle-box {
     margin-bottom: 20px;
 }
@@ -230,11 +223,23 @@ export default {
 .mr10 {
     margin-right: 10px;
 }
+.orderDetail {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.orderDetail p {
+    width: 900px;
+}
+.title {
+    line-height: 20px;
+}
 .table-td-thumb {
-    display: block;
+    display: inline-block;
     margin: auto;
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
 }
 .el-table .cell {
     overflow: hidden;

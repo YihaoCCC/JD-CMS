@@ -39,31 +39,13 @@ export default {
     components: {
         Schart
     },
+    created(){
+        this.initOptions1()
+        this.initOptions3()
+    },
     data() {
         return {
-            options1: {
-                type: 'bar',
-                title: {
-                    text: '最近一周各品类销售图'
-                },
-                bgColor: '#fbfbfb',
-                labels: ['周一', '周二', '周三', '周四', '周五'],
-                datasets: [
-                    {
-                        label: '家电',
-                        fillColor: 'rgba(241, 49, 74, 0.5)',
-                        data: [234, 278, 270, 190, 230]
-                    },
-                    {
-                        label: '百货',
-                        data: [164, 178, 190, 135, 160]
-                    },
-                    {
-                        label: '食品',
-                        data: [144, 198, 150, 235, 120]
-                    }
-                ]
-            },
+            options1: {},
             options2: {
                 type: 'line',
                 title: {
@@ -87,20 +69,7 @@ export default {
                 ]
             },
             options3: {
-                type: 'pie',
-                title: {
-                    text: '服装品类销售饼状图'
-                },
-                legend: {
-                    position: 'left'
-                },
-                bgColor: '#fbfbfb',
-                labels: ['T恤', '牛仔裤', '连衣裙', '毛衣', '七分裤', '短裙', '羽绒服'],
-                datasets: [
-                    {
-                        data: [334, 278, 190, 235, 260, 200, 141]
-                    }
-                ]
+                
             },
             options4: {
                 type: 'ring',
@@ -120,7 +89,63 @@ export default {
                     }
                 ]
             }
-        };
+        }
+    },
+    methods: {
+        initOptions1() {
+            let option = {
+                type: 'bar',
+                title: {
+                    text: '最近一周各品类销售图'
+                },
+                bgColor: '#fbfbfb',
+                labels: ['周一', '周二', '周三', '周四', '周五'],
+                datasets: [
+                    {
+                        label: '家电',
+                        fillColor: 'rgba(241, 49, 74, 0.5)',
+                        data: [234, 278, 270, 190, 230]
+                    },
+                    {
+                        label: '百货',
+                        data: [164, 178, 190, 135, 160]
+                    },
+                    {
+                        label: '食品',
+                        data: [144, 198, 150, 235, 120]
+                    }
+                ]
+            }
+            this.options1 = option
+        },
+        initOptions3() {
+            let option = {
+                type: 'pie',
+                title: {
+                    text: '服装品类销售饼状图'
+                },
+                legend: {
+                    position: 'left'
+                },
+                bgColor: '#fbfbfb',
+                labels: [],
+                datasets: [
+                    {
+                        data: []
+                    }
+                ]
+            }
+            this.yhService.post('/backYuApi/shop_war/SaleSituationByKind').then(res => {
+                console.log(res)
+                res.map( item => {
+                    option.labels.push(item.kind)
+                   option.datasets[0].data.push(item.amount)
+                })
+                this.options3 = option
+                console.log(this.options3.labels)
+                
+            })
+        },
     }
 };
 </script>

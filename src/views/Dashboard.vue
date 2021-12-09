@@ -247,10 +247,10 @@ export default {
             });
         },
         getTotalSale() {
-            this.yhService.post('/api/shop_war/TotalIncome').then(res => {
+            this.yhService.post('/backYuApi/shop_war/TotalIncome').then(res => {
                 this.totalSale = res
             })
-        }
+        },
     },
     
 };

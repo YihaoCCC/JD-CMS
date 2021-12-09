@@ -50,7 +50,6 @@
 </template>
 
 <script>
-// import bus from "../common/bus";
 export default {
     data() {
         return {
@@ -74,11 +73,6 @@ export default {
                     icon: "el-icon-lx-roundadd",
                     index: "addGoodsForm",
                     title: "新增商品",
-                },
-                {
-                    icon: "el-icon-lx-add",
-                    index: "addGoodsPromotion",
-                    title: "新增促销",
                 },
                 {
                     icon: "el-icon-pie-chart",

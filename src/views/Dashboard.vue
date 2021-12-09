@@ -4,7 +4,7 @@
             <el-col :span="8">
                 <el-card shadow="hover" class="mgb20" style="height:252px;">
                     <div class="user-info">
-                        <img src="../assets/img/img.jpg" class="user-avator" alt />
+                        <img src="../assets/img/avatar.png" class="user-avator" alt />
                         <div class="user-info-cont">
                             <div class="user-info-name">{{ name }}</div>
                             <div>{{ role }}</div>
@@ -25,10 +25,10 @@
                             <span>语言详情</span>
                         </div>
                     </template>
-                    Vue
+                    Vue3.0
                     <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
-                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
-                    <el-progress :percentage="13.7"></el-progress>HTML
+                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>Scss
+                    <el-progress :percentage="13.7"></el-progress>TypeScript
                     <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
                 </el-card>
             </el-col>
@@ -126,15 +126,15 @@ export default {
             name: localStorage.getItem("ms_username"),
             todoList: [
                 {
-                    title: "今天要修复100个bug",
+                    title: "达达利亚商城2.0版本已上线",
                     status: false
                 },
                 {
-                    title: "今天要修复100个bug",
+                    title: "系统更新提示",
                     status: false
                 },
                 {
-                    title: "今天要写100行代码加几个bug吧",
+                    title: "达达利亚商城系管理更新提醒",
                     status: false
                 },
                 {

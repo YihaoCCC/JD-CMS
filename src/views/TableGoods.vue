@@ -9,12 +9,6 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除</el-button>
                 <el-select v-model="query.address" placeholder="是否自营" class="handle-select mr10">
                     <el-option key="1" label="自营" value="自营"></el-option>
                     <el-option key="2" label="非自营" value="非自营"></el-option>
@@ -28,18 +22,10 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change="handleSelectionChange"
                 max-height="630"
-
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+               
                 <el-table-column type="index" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column align="center" label="详情" type="expand" width="50px" >
-                    <template #default="scope">
-                        <p>商品名称：{{ scope.row.goodsName }}</p>
-                        <p>商品详情：{{scope.row.goodsDetail}}</p>
-                    </template>
-                </el-table-column>
                 <el-table-column  label="商品名称" align="center" width="240px" >
                     <template #default="scope">{{ scope.row.goodsName }}</template>
                 </el-table-column>
@@ -58,33 +44,72 @@
                 </el-table-column>
                 <el-table-column prop="goodsIsSelf" label="商品是否自营"  align="center" width="140px">
                     <template #default='scoped'>
-                        <el-tag :type=" scoped.row.goodsIsSelf? 'success':'danger'">
-                            {{ scoped.row.goodsIsSelf ? '自营' : '非自营'}}
-                        </el-tag>
+                        <button style="border:none;background:none">
+                            <el-tag :type=" scoped.row.goodsIsSelf? '':'danger'">
+                                {{ scoped.row.goodsIsSelf ? '自营' : '非自营'}}
+                            </el-tag>
+                        </button>
+                       
                     </template>
                 </el-table-column>
                 <el-table-column label="促销状态" align="center" width="140">
                     <template #default="scope">
                         <el-tag
                             :type="
-                                scope.row.state === '成功'
+                                scope.row.promotionDetail === '满300减20'
                                     ? 'success'
-                                    : scope.row.state === '失败'
+                                    : scope.row.promotionDetail === '满500减60'
+                                    ? ''
+                                    : !scope.row.promotionDetail
                                     ? 'danger'
-                                    : ''
+                                    : 'warning'
                             "
-                        >{{ scope.row.state }}</el-tag>
+                        >{{ scope.row.promotionDetail || '无优惠' }}</el-tag>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="是否上架" align="center">
+                    <template #default='scoped'>
+                        <el-tag
+                            :type="
+                                scoped.row.goodsStatus === 1
+                                    ? 'success'
+                                    : 'danger'
+                            "
+                        >
+                        {{scoped.row.goodsStatus === 1 ? '已上架' : '已下架'}}</el-tag>
                     </template>
                 </el-table-column>
 
                 <el-table-column prop="goodsInvn" label="库存" align="center" width="80px"></el-table-column>
-                <el-table-column prop="date" label="版本信息" align="center"></el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column prop="date" label="版本信息" align="center">
+                    <template #default='scoped'>
+                       {{scoped.row.goodsVersions.length}} 个版本
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="详情" type="expand" width="50px" >
+                   <template #default="scope">
+                        <div >商品版本详情：（点击图片查看大图）
+                            <div class="orderDetail" v-for="item in scope.row.goodsVersions" :key="item.goodsVersionId">
+                                <p style="margin-top:10px"> <em style="font-size:12px;color:#e1251b"> 价格:</em> {{item.goodsPrice}} <em style="font-size:12px;color:#e1251b">版本：</em> {{item.goodsVersionDetail}} <em style="font-size:12px;color:#e1251b">库存：</em>{{item.versionInvn}}</p> 
+                                 <el-image
+                                    class="table-td-thumb"
+                                    :src="item.versionPhotoUrl"
+                                    :preview-src-list="[item.versionPhotoUrl]"
+                                ></el-image>
+                            </div>
+                           
+                        </div>
+                        
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="160" align="center">
                     <template #default="scope">
                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="handleEdit(scope.$index, scope.row)"
+                            :disabled='scope.row.promotionDetail!==null'
                         >编辑</el-button>
                         <el-button
                             type="text"
@@ -96,31 +121,41 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination
-                    background
-                    layout="total, prev, pager, next"
-                    :current-page="query.pageIndex"
-                    :page-size="query.pageSize"
-                    :total="pageTotal"
-                    @current-change="handlePageChange"
-                ></el-pagination>
+                <el-button type="primary" plain  @click="backIndexPage" v-show='pageNum > 1'>
+                   回到首页
+                </el-button>
+               <el-button type="primary" @click="nextPage">
+                   下一页
+               </el-button>
+               
             </div>
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" v-model="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+        <el-dialog title="新增促销" v-model="editVisible" width="30%">
+            <el-form ref="form" label-width="80px">
+                <el-form-item label="添加促销:">
+                    <span style="display:block">促销触发价格（最低300）</span>
+                    <el-input-number v-model="promotionStartNum" :min="300" :step="100" />
+                    <span style="display:block">促销满减优惠(最低20)</span>
+                    <el-input-number v-model="promotionNum" :min="20" :step="10" />   
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="优惠区间:">
+                   <el-date-picker
+                        v-model="TimeValue"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="截至日期"
+                    >
+                    </el-date-picker>
+                    <span class="demonstration">默认从开始日期9:00开始, 至截至日期23:59结束</span>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                    <el-button type="primary" @click="saveEdit">修改商品促销信息</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -147,22 +182,23 @@ export default {
             form: {},
             idx: -1,
             id: -1,
-            pageNum: 1
+            pageNum: 1,
+            TimeValue: [],
+            promotionStartNum: 300, 
+            promotionNum: 20,
         };
     },
     created() {
         this.getData();
     },
     methods: {
-        // 获取 easy-mock 的模拟数据
         getData() {
-            // fetchData(this.query).then(res => {
-            //     console.log(res);
-            //     this.tableData = res.list;
-            //     this.pageTotal = res.pageTotal || 50;
-            // });
             this.yhService.get(`/backSuApi/admin/queryAll/${this.pageNum}`).then(res => {
-                this.tableData = res
+                if(res.length !== 0) {
+                    this.tableData = res
+                } else {
+                    this.$message.warning('没有更多数据了')
+                }
             })
         },
         // 触发搜索按钮
@@ -171,48 +207,66 @@ export default {
             this.getData();
         },
         // 删除操作
-        handleDelete(index) {
+        handleDelete(index, row) {
             // 二次确认删除
-            this.$confirm("确定要删除吗？", "提示", {
+            this.$confirm("该商品已经上架，确定要删除此商品吗？", "来自达达利亚的提示", {
                 type: "warning"
             })
                 .then(() => {
-                    this.$message.success("删除成功");
-                    this.tableData.splice(index, 1);
+                    this.yhService.delete(`/backSuApi/admin/deleteGoods/${row.goodsId}`).then(res => {
+                        if(res) {
+                            this.$message.success("删除成功");
+                            this.tableData.splice(index, 1);
+                            history.go(0)        
+                        }
+                    }).catch(res=> {
+                        return new Promise(res)
+                    })
+                    
                 })
                 .catch(() => {});
-        },
-        // 多选操作
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        delAllSelection() {
-            const length = this.multipleSelection.length;
-            let str = "";
-            this.delList = this.delList.concat(this.multipleSelection);
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + " ";
-            }
-            this.$message.error(`删除了${str}`);
-            this.multipleSelection = [];
         },
         // 编辑操作
         handleEdit(index, row) {
             this.idx = index;
             this.form = row;
             this.editVisible = true;
-            console.log(row.name+"````````"+index);
+            console.log(row.goodsId+"````````"+index);
         },
         // 保存编辑
-        saveEdit() {
-            this.editVisible = false;
-            this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-            this.$set(this.tableData, this.idx, this.form);
+        saveEdit() { 
+            if(!this.TimeValue[0]) {
+                this.$message.error('时间区间不可有空值')
+            } else {
+                let d1 = new Date(this.TimeValue[0].toString())
+                let d2 = new Date(this.TimeValue[1].toString())
+                let startTime =  d1.getFullYear() + '-' + (d1.getMonth() + 1) + '-' + d1.getDate()
+                let endTime = d2.getFullYear() + '-' + (d2.getMonth() + 1) + '-' + d2.getDate()
+                this.yhService.post('/backSuApi/admin/promotion/add', {
+                    goodsId: this.form.goodsId,
+                    promotionFull: this.promotionStartNum,
+                    promotionSub: this.promotionNum,
+                    startTime,
+                    endTime
+                }).then(res => {
+                    if(res) {
+                        this.$message.success('修改成功！')
+                        this.editVisible = false;
+                        history.go(0)
+                    } else {
+                        return 0
+                    }
+                }) 
+             
+            }
         },
-        // 分页导航
-        handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
+        nextPage() {
+            this.pageNum ++
             this.getData();
+        },
+        backIndexPage() {
+            this.pageNum = 1
+            this.getData()
         }
     }
 };
@@ -230,6 +284,12 @@ export default {
 .handle-input {
     width: 300px;
     display: inline-block;
+}
+.orderDetail {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 5px;
 }
 .table {
     width: 100%;
@@ -252,4 +312,14 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;    
 }
+.table-td-thumb {
+    display: inline-block;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+}
+.el-dialog__body{
+    padding: 10px 30px;
+}
+
 </style>

@@ -9,10 +9,6 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-select v-model="query.address" placeholder="是否自营" class="handle-select mr10">
-                    <el-option key="1" label="自营" value="自营"></el-option>
-                    <el-option key="2" label="非自营" value="非自营"></el-option>
-                </el-select>
                 <el-input v-model="query.name" placeholder="商品名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
@@ -97,6 +93,11 @@
                                     :src="item.versionPhotoUrl"
                                     :preview-src-list="[item.versionPhotoUrl]"
                                 ></el-image>
+                            </div>
+                            评论信息：
+                            <div class="goodsComment" v-for="item in scope.row.reviews" :key="item.reviewId" :title="item.reviewMessage">
+                                <span>{{item.userName}}</span>
+                                <p>{{item.reviewMessage}}</p>
                             </div>
                            
                         </div>
@@ -203,8 +204,13 @@ export default {
         },
         // 触发搜索按钮
         handleSearch() {
-            this.$set(this.query, "pageIndex", 1);
-            this.getData();
+            this.yhService.get(`/backSuApi/admin/queryByGoodsName/${this.query.name}`).then(res=> {
+                if(res.length!==0) {
+                    this.tableData = res
+                } else {
+                    this.$message.warning('没有搜索到相关数据！')
+                }
+            })
         },
         // 删除操作
         handleDelete(index, row) {
@@ -290,6 +296,22 @@ export default {
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 5px;
+}
+.goodsComment {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    color: #777;
+}
+.goodsComment p {
+    margin-left: 100px;
+    width: 800px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.goodsComment span {
+    width: 50px;
 }
 .table {
     width: 100%;

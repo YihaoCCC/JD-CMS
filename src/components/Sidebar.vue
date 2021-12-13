@@ -70,6 +70,11 @@ export default {
                     title: '订单管理'
                 },
                 {
+                    icon: 'el-icon-lx-edit',
+                    index: 'user',
+                    title: '用户管理'
+                },
+                {
                     icon: "el-icon-lx-roundadd",
                     index: "addGoodsForm",
                     title: "新增商品",

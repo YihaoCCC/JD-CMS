@@ -80,7 +80,6 @@
                         <el-col :span='8'>
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit">增加该商品</el-button>
-                                <el-button type="primary" @click="goindex">fdsafasd</el-button>
                                 <el-button>取消</el-button>
                             </el-form-item>
                         </el-col>

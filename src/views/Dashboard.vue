@@ -50,7 +50,7 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-message-solid grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
+                                    <div class="grid-num">6</div>
                                     <div>系统消息</div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-s-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
+                                    <div class="grid-num">9999</div>
                                     <div>数量</div>
                                 </div>
                             </div>

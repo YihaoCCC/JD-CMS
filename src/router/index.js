@@ -35,6 +35,13 @@ const routes = [
                     title: '订单管理'
                 },
                 component: ()=> import ('../views/TableOrder.vue')
+            },{
+                path: '/user',
+                name: 'user',
+                meta: {
+                    title: '用户管理'
+                },
+                component: ()=> import ('../views/User.vue')
             }, {
                 path: "/charts",
                 name: "basecharts",
